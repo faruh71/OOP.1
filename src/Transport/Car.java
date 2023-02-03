@@ -1,6 +1,5 @@
 package Transport;
 
-import java.security.Key;
 import java.util.regex.Pattern;
 
 public class Car {
@@ -14,9 +13,8 @@ public class Car {
     private String bodytype;
     private String registrationNumber;
     private int numberSeats;
+    private boolean season;
     private Key key;
-
-    private String season;
 
 //    public Car(String brand, String model, int year, String country, String color, double engineVolume) {
 //        this.brand = string(brand, "бренд  не указан ");
@@ -28,7 +26,7 @@ public class Car {
 //    }
 
     public Car(String brand, String model, int year, String country, String color, double engineVolume, String transmission,
-               String bodytype, String registrationNumber, int numberSeats, String season) {
+               String bodytype, String registrationNumber, int numberSeats, boolean season, Key key) {
         this.brand = string(brand, "бренд  не указан ");
         this.model = string(model, " не указана ");
         this.engineVolume = volume(engineVolume);
@@ -39,38 +37,30 @@ public class Car {
         this.bodytype = getBodytype();
         this.registrationNumber = registracionNumbers(registrationNumber);
         this.numberSeats = number(numberSeats, 4);
-        this.season = getSeason();
+        this.season = season;
+        setKey(key);
     }
 
-    public class Key {
-        private String remoteStart;
-        private String keylessAccess;
+    public static class Key {
+        private final boolean remoteStart;
+        private final boolean keylessAccess;
 
-        public Key(String remoteStart, String keylessAccess) {
-            this.remoteStart = string(remoteStart, "нет");
-            this.keylessAccess = string(keylessAccess, "нет");
+        public Key(boolean remoteStart, boolean keylessAccess) {
+            this.remoteStart = remoteStart;
+            this.keylessAccess = keylessAccess;
         }
 
-        public String getRemoteStart() {
-            return string(remoteStart, "стандартный");
+        public boolean isRemoteStart() {
+            return remoteStart;
         }
 
-        public void setRemoteStart(String remoteStart) {
-            this.remoteStart = string(remoteStart, "стандартный");
-        }
-
-        public String getKeylessAccess() {
-            return string(keylessAccess, "стандарный");
-        }
-
-        public void setKeylessAccess(String keylessAccess) {
-            this.keylessAccess = string(keylessAccess, "стандарный");
-
+        public boolean isKeylessAccess() {
+            return keylessAccess;
         }
 
         @Override
         public String toString() {
-            return "дистанционный запуск -" + remoteStart + " , бесключевой  доступ - " + keylessAccess + " .";
+            return (remoteStart ? ", удаленный запуск " : ", без удаленного запуска ") + " " + (keylessAccess ? ", беcключквой дотуп " : ", ключевой дотуп ");
         }
     }
 
@@ -116,6 +106,7 @@ public class Car {
         this.transmission = string(transmission, "механика");
     }
 
+
     public String getBodytype() {
         return string(bodytype, "седан");
     }
@@ -132,19 +123,32 @@ public class Car {
         return numberSeats < 0 ? 4 : numberSeats;
     }
 
-    public String getSeason() {
-        return season = string("зимние", season);
+    public boolean isSeason() {
+        return season;
     }
 
-    public void setSeason(String season) {
-        this.season = string(season, "зимние");
-    }
+    public void setSeason(int month) {
+        if ((month >= 11 && month <= 12) || (month >= 1 && month <= 3)) {
+            season = false;
+        } else if (month >= 4 && month <= 10) {
+            season = true;
+        }
+    }    //    public String getSeason() {
+//        return season = string("зимние", season);
+//    }
+//
+//    public void setSeason(String season) {
+//        this.season = string(season, "зимние");
+//    }
 
     public Key getKey() {
         return key;
     }
 
     public void setKey(Key key) {
+        if (key == null) {
+            key = new Key(false, false);
+        }
         this.key = key;
     }
 
@@ -167,7 +171,7 @@ public class Car {
                 ", тип кузова ='" + bodytype + '\'' +
                 ", гос номер ='" + registrationNumber + '\'' +
                 ", вместимость =" + numberSeats +
-                ", шины ='" + season + "\n";
+                ", шины ='" + (season ? "летние" : "зимние") + " , " + key + " \n";
     }
 
     public static String registracionNumbers(String i) {
@@ -191,5 +195,7 @@ public class Car {
     public static String string(String a, String s) {
         return a == null || a.isBlank() || a.isEmpty() ? s : a;
     }
+
+
 
 }
