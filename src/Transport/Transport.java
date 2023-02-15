@@ -1,77 +1,60 @@
 package Transport;
 
-public class Transport {
-    private final String brand;
+
+public abstract class Transport<T extends Driver> implements Competing {
+    private final String brend;
     private final String model;
-    private final int year;
-    private final String country;
-    private String color;
-    private int maxSpeed;
+    private double engineVolume;
+    private T driver;
 
-    public Transport(String brand, String model, int year, String country, String color) {
-        this.brand = string(brand);
-        this.model = string(model);
-        this.color = string(color, "белый");
-        this.year = number(year, 2000);
-        this.country = string(country);
 
+    public Transport(String brend, String model, double engineVolume, T driver) {
+        this.brend = strings(brend);
+        this.model = strings(model);
+        this.engineVolume = numbers(engineVolume);
+        setDriver(driver);
     }
 
-    public Transport(String brand, String model, int year, String country, String color, int maxSpeed) {
-        this.brand = string(brand);
-        this.model = string(model);
-        this.color = string(color, "белый");
-        this.year = number(year, 2000);
-        this.country = string(country);
-        this.maxSpeed = number(maxSpeed,90);
+    public void printInfo() {
+        System.out.println("brend = " + brend +
+                ", Model = " + model +
+                ", engineVolume = " + engineVolume +" , "+driver);
     }
+    abstract void start();
 
-    @Override
-    public String toString() {
-        return brand + ", модель " + model + " , год выпуска " + year + ", страна производства " + country
-                + " , цвет кузова -" + color + ", максимальная скорость =" + maxSpeed;
-    }
+    abstract void stop();
 
-    public String getBrand() {
-        return string(brand);
+
+    public String getBrend() {
+        return strings(brend);
     }
 
     public String getModel() {
-        return string(model);
+        return strings(model);
     }
 
-    public int getYear() {
-        return number(year, 2000);
+    public double getEngineVolume() {
+        return engineVolume;
     }
 
-    public String getCountry() {
-        return string(country, "Россия");
+    public void setEngineVolume(double engineVolume) {
+        this.engineVolume = engineVolume;
     }
 
-    public String getColor() {
-        return color = string(color, "белый");
+    public T getDriver() {
+        return driver;
     }
 
-    public void setColor(String color) {
-        this.color = string(color, "белый");
+    public void setDriver(T driver) {
+        this.driver = driver;
     }
 
-    public int getMaxSpeed() {
-        return maxSpeed=number(maxSpeed,60);
+    public static String strings(String value) {
+        return value == null || value.isEmpty() || value.isBlank() ? "не известно" : value;
     }
 
-    public void setMaxSpeed(int maxSpeed) {
-        this.maxSpeed = number(maxSpeed,60);
-    }
-
-    public static int number(int a, int s) {
-        return a <= 0 ? s : a;
-    }
-
-    public static String string(String a, String s) {
-        return a == null || a.isBlank() || a.isEmpty() ? s : a;
-    }
-        public static String string(String a) {
-        return a == null || a.isBlank() || a.isEmpty() ? " неизвестно " : a;
+    public static double numbers(double value) {
+        return value <= 0 ? 1.5 : value;
     }
 }
+
