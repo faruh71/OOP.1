@@ -42,11 +42,12 @@ public abstract class Driver {
     public void setExperience(int experience) {
         this.experience = experience;
     }
+
     @Override
     public String toString() {
         return " имя водителя " + name +
                 ", категория= " + driversLicense +
-                ", стаж =" + experience+ " лет учавствует в заезде " ;
+                ", стаж =" + experience + " лет учавствует в заезде ";
     }
 
 

@@ -7,6 +7,7 @@ public abstract class Transport<T extends Driver> implements Competing {
     private double engineVolume;
     private T driver;
 
+    private LoadCapaciti loadCapaciti;
 
     public Transport(String brend, String model, double engineVolume, T driver) {
         this.brend = strings(brend);
@@ -18,12 +19,21 @@ public abstract class Transport<T extends Driver> implements Competing {
     public void printInfo() {
         System.out.println("brend = " + brend +
                 ", Model = " + model +
-                ", engineVolume = " + engineVolume +" , "+driver);
+                ", engineVolume = " + engineVolume + " , " + driver);
     }
+
+    abstract Type getType();
+
+    abstract void printType();
+
     abstract void start();
 
     abstract void stop();
 
+
+    public LoadCapaciti getLoadCapaciti() {
+        return loadCapaciti;
+    }
 
     public String getBrend() {
         return strings(brend);
@@ -48,6 +58,7 @@ public abstract class Transport<T extends Driver> implements Competing {
     public void setDriver(T driver) {
         this.driver = driver;
     }
+
 
     public static String strings(String value) {
         return value == null || value.isEmpty() || value.isBlank() ? "не известно" : value;
